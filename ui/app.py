@@ -18,7 +18,7 @@ import sys
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 # Updated imports based on new structure
-from ml_model.train_model import simple_rule_based_predict
+from ml_model.train_model import rule_based_predict
 from rule_based_system.expert_system import PatientData, HeartDiseaseExpert
 from rule_based_system.rules import run_expert_system
 
@@ -312,7 +312,7 @@ elif page == "Expert System vs ML":
         
         df_raw_aligned = df_raw.dropna(subset=['target']).reset_index(drop=True)
         raw_test = df_raw_aligned.iloc[X_test.index]
-        y_rb = raw_test.apply(simple_rule_based_predict, axis=1)
+        y_rb = raw_test.apply(rule_based_predict, axis=1)
         
         perf_df = pd.DataFrame({
             'System': ['ML', 'ML', 'ML', 'ML', 'Rule-Based', 'Rule-Based', 'Rule-Based', 'Rule-Based'],
