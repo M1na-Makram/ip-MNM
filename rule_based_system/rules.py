@@ -1,38 +1,31 @@
-from rule_based_system.expert_system import PatientData, HeartDiseaseExpert
+from rule_based_system.expert_system import PatientData, HeartRules, HeartDiseaseExpert
 
 
 def run_expert_system(patient_dict):
-    engine = HeartDiseaseExpert()
+    engine = HeartRules()
     engine.reset()
     engine.declare(PatientData(**patient_dict))
     engine.run()
 
 
 if __name__ == "__main__":
-    print("Patient 1 - High Risk Profile")
-    run_expert_system({
-        'age': 55,
-        'cholesterol': 250,
-        'blood_pressure': 145,
-        'smoking': 'yes',
-        'exercise': 'no',
-        'bmi': 31,
-        'blood_sugar': 130,
-        'chest_pain': 'typical',
-        'max_heart_rate': 110,
-        'family_history': 'yes'
-    })
+    print("----------Heart Disease System-----------")
+    
+    data = {
+        "age": int(input("Enter your age please: ")),
+        "cholesterol": int(input("Cholesterol: ")),
+        "blood_pressure": int(input("Blood Pressure: ")),
+        "smoking": input("Smoking (y/n): ").lower() == "y",
+        "diabetes": input("Diabetes (y/n): ").lower() == "y",
+        "obesity": input("Obesity (y/n): ").lower() == "y",
+        "exercise": input("Exercise (low/normal/high): ").lower(),
+        "chest_pain": input("Chest Pain (yes/no): ").lower(),
+        "family_history": input("Family History (y/n): ").lower() == "y",
+        "rest_ecg": input("ECG (Normal/Abnormal): ").lower()
+    }
 
-    print("\nPatient 2 - Low Risk Profile")
-    run_expert_system({
-        'age': 30,
-        'cholesterol': 180,
-        'blood_pressure': 115,
-        'smoking': 'no',
-        'exercise': 'regular',
-        'bmi': 22,
-        'blood_sugar': 90,
-        'chest_pain': 'asymptomatic',
-        'max_heart_rate': 160,
-        'family_history': 'no'
-    })
+    print("\n===========================================")
+    print("Running Analysis...")
+    run_expert_system(data)
+    print("Analysis completed")
+    print("===========================================")

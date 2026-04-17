@@ -1,8 +1,5 @@
 import collections
 import collections.abc
-
-# experta was written before Python 3.10 moved these out of the top-level
-# collections namespace - this just patches them back in
 collections.Mapping = collections.abc.Mapping
 collections.Iterable = collections.abc.Iterable
 collections.MutableMapping = collections.abc.MutableMapping
@@ -15,55 +12,47 @@ class PatientData(Fact):
     pass
 
 
-class HeartDiseaseExpert(KnowledgeEngine):
+class HeartRules(KnowledgeEngine):
+    
+    @Rule(PatientData(age=P(lambda x: x > 50)))
+    def ageRule(self):
+        print("Risk: \n Old Age")
 
-    # older patients with high cholesterol are a pretty clear high-risk combo
-    @Rule(PatientData(cholesterol=P(lambda x: x > 240), age=P(lambda x: x > 50)))
-    def high_chol_older_patient(self):
-        print("High cholesterol + age > 50 -> high risk")
+    @Rule(PatientData(cholesterol=P(lambda x: x > 240)))
+    def cholRule(self):
+        print("Risk: \n High cholesterol")
 
-    # hypertension + smoking is a bad combo regardless of other factors
-    @Rule(PatientData(blood_pressure=P(lambda x: x > 140), smoking='yes'))
-    def hypertension_smoker(self):
-        print("BP > 140 + smoker -> high risk")
+    @Rule(PatientData(blood_pressure=P(lambda x: x > 140)))
+    def blopresRule(self):
+        print("Risk: \n High Blood Pressure")
 
-    @Rule(PatientData(exercise='regular', bmi=P(lambda x: x < 25)))
-    def active_healthy_weight(self):
-        print("Regular exercise + healthy BMI -> low risk")
+    @Rule(PatientData(smoking=P(lambda x: x in [True, 'yes', 'y'])))
+    def smokingRule(self):
+        print("Risk: \n Smoking")
 
-    # elevated blood sugar at middle age often points to early diabetes risk
-    @Rule(PatientData(blood_sugar=P(lambda x: x > 120), age=P(lambda x: x > 45)))
-    def elevated_sugar_middle_age(self):
-        print("Blood sugar > 120 + age > 45 -> medium risk")
+    @Rule(PatientData(diabetes=P(lambda x: x in [True, 'yes', 'y'])))
+    def diabetesRule(self):
+        print("Risk: \n Diabetes")
 
-    @Rule(PatientData(chest_pain='typical', max_heart_rate=P(lambda x: x < 120)))
-    def chest_pain_low_hr(self):
-        print("Typical chest pain + low max HR -> high risk")
+    @Rule(PatientData(obesity=P(lambda x: x in [True, 'yes', 'y'])))
+    def obesityRule(self):
+        print("Risk: \n Obesity")
 
-    @Rule(PatientData(bmi=P(lambda x: x > 30), blood_pressure=P(lambda x: x > 130)))
-    def obese_hypertensive(self):
-        print("BMI > 30 + elevated BP -> medium risk")
+    @Rule(PatientData(exercise=P(lambda x: str(x).lower() in ['low', 'none', 'no', 'light'])))
+    def exerRule(self):
+        print("Risk: \n Low Exercise")
+    
+    @Rule(PatientData(chest_pain=P(lambda x: str(x).lower() in ['yes', 'typical', 'typical angina'])))
+    def chesRule(self):
+        print("Risk: \n Chest Pain")
 
-    @Rule(PatientData(family_history='yes', age=P(lambda x: x > 40)))
-    def family_history_older(self):
-        print("Family history + age > 40 -> medium risk")
+    @Rule(PatientData(family_history=P(lambda x: x in [True, 'yes', 'y'])))
+    def familyRule(self):
+        print("Risk: \n Family History")
 
-    # all markers in a healthy range - this is the "textbook healthy" case
-    @Rule(PatientData(
-        cholesterol=P(lambda x: x < 200),
-        blood_pressure=P(lambda x: x < 120),
-        bmi=P(lambda x: x < 25),
-        smoking='no',
-        exercise='regular'
-    ))
-    def all_healthy_indicators(self):
-        print("All indicators healthy -> low risk")
+    @Rule(PatientData(rest_ecg=P(lambda x: str(x).lower() in ['abnormal', 'st-t wave', 'lv hypertrophy'])))
+    def ecgRule(self):
+        print("Risk: \n Abnormal ECG")
 
-    @Rule(PatientData(exercise='no', smoking='yes'))
-    def sedentary_smoker(self):
-        print("No exercise + smoker -> high risk")
 
-    # young, not overweight, non-smoker - baseline low risk
-    @Rule(PatientData(age=P(lambda x: x < 35), bmi=P(lambda x: x < 25), smoking='no'))
-    def young_healthy_nonsmoker(self):
-        print("Age < 35 + healthy BMI + non-smoker -> low risk")
+HeartDiseaseExpert = HeartRules

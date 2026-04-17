@@ -178,7 +178,10 @@ if page == "Patient Risk Assessment":
                     'smoking': smoking.lower(), 'exercise': exercise.lower(),
                     'bmi': bmi, 'blood_sugar': fbs_val,
                     'chest_pain': 'typical' if cp_sel == 1 else 'none',
-                    'max_heart_rate': thalach, 'family_history': family.lower()
+                    'max_heart_rate': thalach, 'family_history': family.lower(),
+                    'diabetes': fbs_val > 120,
+                    'obesity': bmi > 30,
+                    'rest_ecg': restecg_map[restecg].lower()
                 }
                 expert_output = run_and_capture_expert(patient_dict)
                 
@@ -353,6 +356,6 @@ elif page == "About":
 
     **Project Team & Responsibilities:**
     - **Mina**: Data Preprocessing & Visualization Orchestration
-    - **Nance**: Knowledge Engineering & Experta Logic Implementation
+    - **Knowledge Engineer**: Knowledge Engineering & Experta Logic Implementation
     - **Marsel**: Machine Learning Architecture & Performance Comparison
     """)
