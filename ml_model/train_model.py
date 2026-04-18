@@ -57,17 +57,13 @@ def main():
     print(f"ML model:   {(y_test == y_pred_ml).sum()}/{len(y_test)} correct ({ml_acc:.2%})")
 
     total = len(y_test)
-    report = f"""# Accuracy Comparison
-
-| System | Accuracy | Correctly Classified | Total Test Samples |
-|--------|----------|----------------------|-------------------|
-| Machine Learning (Decision Tree) | {ml_acc:.2%} | {(y_test == y_pred_ml).sum()} | {total} |
-| Simple Rule-Based System | {rule_acc:.2%} | {correct_rules} | {total} |
-"""
     report_path = os.path.join(report_dir, 'accuracy_comparison.md')
     with open(report_path, 'w') as f:
-        f.write(report)
-    print(f"\nSaved report to {report_path}")
+        f.write(f"ML Accuracy: {ml_acc:.2%}\n")
+        f.write(f"Rule-based Accuracy: {rule_acc:.2%}\n")
+        f.write(f"Total Samples: {total}")
+        
+    print(f"Report saved to {report_path}")
 
 
 if __name__ == "__main__":
