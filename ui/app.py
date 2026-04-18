@@ -356,6 +356,6 @@ elif page == "About":
 
     **Project Team & Responsibilities:**
     - **Mina**: Data Preprocessing & Visualization Orchestration
-    - **Knowledge Engineer**: Knowledge Engineering & Experta Logic Implementation
+    - **Nance**: Knowledge Engineering & Experta Logic Implementation
     - **Marsel**: Machine Learning Architecture & Performance Comparison
     """)
